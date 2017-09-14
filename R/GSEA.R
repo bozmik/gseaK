@@ -16,13 +16,13 @@ gseaK <- function(expr, pheno, gSets, stest, abs, kernel, n.perm, correction) {
   gene_labels<-rownames(expr)
   sample_names<-colnames(expr)
 
-  ###cls file
+  ###phenotype data
   class <- unlist(strsplit(pheno[[3]], " "))
   n_cl <-length(class)  #number of samples
   class<-as.factor(class)
   levels(class)=list('0'='c','1'='d')
 
-  ####gmx file - gene sets
+  ####gene sets
   gSets<-data.frame(gSets[-1,])
 
   ## sample division into 2 groups
@@ -31,11 +31,10 @@ gseaK <- function(expr, pheno, gSets, stest, abs, kernel, n.perm, correction) {
   in_gr2=which(class==1)
 
  ###### Rank metrics
-  if(stest=="FC")
+ # if(stest=="FC")
     p_stat_t<-as.matrix(diffmean.stat(t(expr),class))
 
   rownames(p_stat_t)=rownames(expr)
-
 
   if (abs=="TRUE") {
     stat<-as.data.frame(abs(p_stat_t[,1]))
@@ -44,7 +43,8 @@ gseaK <- function(expr, pheno, gSets, stest, abs, kernel, n.perm, correction) {
 
   ###ranking of genes
   ord=stat[order(stat,decreasing = T),,drop=F]
-  gene_name_ord<-as.matrix(rownames(ord))
+  gene_name_ord<-vector(mode="character", length=0)
+  gene_name_ord<-rownames(ord)
 
 
   n_perm<-1000 ###number of permutations
@@ -89,13 +89,20 @@ gseaK <- function(expr, pheno, gSets, stest, abs, kernel, n.perm, correction) {
     N_R<-sum(abs(as.numeric((in_GS[,2]))))
     P_miss<-(1/(N-N_H))
 
-    data_input<-list(ord=ord,gene_name_ord=gene_name_ord,P_miss=P_miss,N_R=N_R,N=N,da=da)
+    P_hit_vec<-matrix(nrow=x$N)
+    P_miss_vec<-matrix(nrow=x$N)
+    ES<-matrix(nrow=x$N)
+    is_in_GS<-matrix(nrow=x$N)
+    ES_matrix<-cbind(x$ord[,1],is_in_GS,P_hit_vec,P_miss_vec,ES)
+    colnames(ES_matrix)=c("t-statistic,","presence in GS","P_hit","P_miss","ES")
+
+    data_input<-list(ord=ord,gene_name_ord=gene_name_ord,P_miss=P_miss,N_R=N_R,da=da)
 
     ##fun_ES_compiled <- cmpfun(fun_ES)
 
     #ES_matrix<-fun_ES_compiled(data_input)
 
-    ES_matrix<- ES(data_input)
+    r<- ES(stat[,1], gene_name_ord, P_miss,N_R,as.character(da))
 
 
     rownames(ES_matrix)<-gene_name_ord

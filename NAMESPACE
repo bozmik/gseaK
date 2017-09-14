@@ -1,1 +1,4 @@
+useDynLib(gseak)
 exportPattern("^[[:alpha:]]+")
+
+importFrom(Rcpp, sourceCpp)
