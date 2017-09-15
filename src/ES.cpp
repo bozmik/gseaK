@@ -4,7 +4,7 @@ using namespace Rcpp;
 
 
 // [[Rcpp::export]]
-NumericMatrix ES(NumericVector stat, CharacterVector geneOrd, double Pmiss, double Nr, CharacterVector gs) {
+NumericMatrix ES(NumericVector stat, CharacterVector geneOrd, double Pmiss, double Nr, NumericVector poz) {
   int N = geneOrd.size();
   NumericVector P_hit_vec(N);
   NumericVector P_miss_vec(N);
@@ -20,29 +20,24 @@ NumericMatrix ES(NumericVector stat, CharacterVector geneOrd, double Pmiss, doub
 
   for(int k = 0; k < N; k++){
     int it2 = 0;
-    for(CharacterVector::iterator it = gs.begin(); it != gs.end(); ++it){
-      if(*it==geneOrd(k)){
+    for(NumericVector::iterator it = poz.begin(); it != poz.end(); ++it){
+      if(k==*it){
         it2++;
       }
     }
     if(it2==0){
-     is_in_GS(k) = 0;
-    // P_hit_vec(k) = cumSumP;
-     *itP = cumSumP;
-     cumSumM = cumSumM + Pmiss;
-     *itM = cumSumM;
-     //P_miss_vec(k) = cumSumM;
+      is_in_GS(k) = 0;
+      *itP = cumSumP;
+      cumSumM = cumSumM + Pmiss;
+      *itM = cumSumM;
     }else{
-     is_in_GS(k) = 1;
-     sum_t_stat = std::abs(stat(k));
-     std::cout <<sum_t_stat <<"\t";
-     Phit = sum_t_stat/Nr;
-     cumSumP = cumSumP + Phit;
-     *itP = cumSumP;
-     *itM = cumSumM;
-     // P_hit_vec(k) = cumSumP;
-     // P_miss_vec(k) = cumSumM;
-   }
+      is_in_GS(k) = 1;
+      sum_t_stat = std::abs(stat(k));
+      Phit = sum_t_stat/Nr;
+      cumSumP = cumSumP + Phit;
+      *itP = cumSumP;
+      *itM = cumSumM;
+      }
     ES(k) = *itP - *itM;
     ++itP;
     ++itM;

@@ -6,8 +6,8 @@
 using namespace Rcpp;
 
 // ES
-NumericMatrix ES(NumericVector stat, CharacterVector geneOrd, double Pmiss, double Nr, CharacterVector gs);
-RcppExport SEXP gseak_ES(SEXP statSEXP, SEXP geneOrdSEXP, SEXP PmissSEXP, SEXP NrSEXP, SEXP gsSEXP) {
+NumericMatrix ES(NumericVector stat, CharacterVector geneOrd, double Pmiss, double Nr, NumericVector poz);
+RcppExport SEXP gseak_ES(SEXP statSEXP, SEXP geneOrdSEXP, SEXP PmissSEXP, SEXP NrSEXP, SEXP pozSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -15,8 +15,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< CharacterVector >::type geneOrd(geneOrdSEXP);
     Rcpp::traits::input_parameter< double >::type Pmiss(PmissSEXP);
     Rcpp::traits::input_parameter< double >::type Nr(NrSEXP);
-    Rcpp::traits::input_parameter< CharacterVector >::type gs(gsSEXP);
-    rcpp_result_gen = Rcpp::wrap(ES(stat, geneOrd, Pmiss, Nr, gs));
+    Rcpp::traits::input_parameter< NumericVector >::type poz(pozSEXP);
+    rcpp_result_gen = Rcpp::wrap(ES(stat, geneOrd, Pmiss, Nr, poz));
     return rcpp_result_gen;
 END_RCPP
 }
