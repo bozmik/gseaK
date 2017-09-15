@@ -20,6 +20,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// ginGS
+List ginGS(CharacterVector g, CharacterVector gs, NumericVector stat);
+RcppExport SEXP gseak_ginGS(SEXP gSEXP, SEXP gsSEXP, SEXP statSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< CharacterVector >::type g(gSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type gs(gsSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type stat(statSEXP);
+    rcpp_result_gen = Rcpp::wrap(ginGS(g, gs, stat));
+    return rcpp_result_gen;
+END_RCPP
+}
 // permutation
 NumericMatrix permutation(NumericVector x, int n);
 RcppExport SEXP gseak_permutation(SEXP xSEXP, SEXP nSEXP) {
@@ -35,6 +48,7 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"gseak_ES", (DL_FUNC) &gseak_ES, 5},
+    {"gseak_ginGS", (DL_FUNC) &gseak_ginGS, 3},
     {"gseak_permutation", (DL_FUNC) &gseak_permutation, 2},
     {NULL, NULL, 0}
 };

@@ -5,6 +5,10 @@ ES <- function(stat, geneOrd, Pmiss, Nr, gs) {
     .Call('gseak_ES', PACKAGE = 'gseak', stat, geneOrd, Pmiss, Nr, gs)
 }
 
+ginGS <- function(g, gs, stat) {
+    .Call('gseak_ginGS', PACKAGE = 'gseak', g, gs, stat)
+}
+
 permutation <- function(x, n) {
     .Call('gseak_permutation', PACKAGE = 'gseak', x, n)
 }

@@ -61,9 +61,6 @@ gseaK <- function(expr, pheno, gSets, stest, abs, kernel, n.perm, correction) {
   index_ph<-permutation(index,n_perm)
 
 
-
-
-t=1
   for (t in 1:n_gene_set){
     da=as.matrix(gSets[,t][!is.na(gSets[,t])])  ##Gene set
     name_gene<-as.vector(colnames(gSets[t]))  ##name of GS
@@ -76,27 +73,11 @@ t=1
     N<-length(gene_name_ord)  #N ordered genes
 
     #####Genes in GS
+    l<-ginGS(gene_name_ord, as.character(da), ord[,1]);
+    l <-cbind(l$names,l$stat)
 
-    names_GS<-matrix(nrow=N,ncol=1)
-    matrix_stat<-matrix(nrow=N,ncol=1)
-    set<-matrix(nrow=N,ncol=1)
 
-    #####!!!!!!poprawić!!!
-    for(k in 1:N){
-      wh2<-which(as.vector(gene_name_ord[k]==da,'numeric')==1)
-      if (length(wh2)!=0){
-        matrix_stat[k,]<-ord[k,1]
-        names_GS[k,1]<-gene_name_ord[k]
-        set[k]=k
-      }
-    }
-
-    in_GS<-cbind(names_GS,matrix_stat)
-    in_GS<-na.omit(in_GS) #which genes are in gene set
-    colnames(in_GS)<-c("gene name","statistic")
-    set<-na.omit(set)
-
-    N_R<-sum(abs(as.numeric((in_GS[,2]))))
+    N_R<-sum(abs(as.numeric((l[,2]))))
     P_miss<-(1/(N-N_H))
 
     ES_matrix<- ES(ord[,1], gene_name_ord, P_miss,N_R,as.character(da))
@@ -130,25 +111,11 @@ t=1
 
     N<-dim(ord_p)[1]
 
-    names_GS_p<-matrix(nrow=N,ncol=1)
-    matrix_stat_p<-matrix(nrow=N,ncol=1)
-    set_p<-matrix(nrow=N,ncol=1)
+    #####Genes in GS
+    l_p<-ginGS(gene_name_ord_p, as.character(da), ord_p[,1]);
+    l_p <-cbind(l_p$names,l_p$stat)
 
-    for(k in 1:N){
-      wh2<-which(as.vector(gene_name_ord[k]==da,'numeric')==1)
-      if (length(wh2)!=0){
-        matrix_stat_p[k,]<-ord_p[k,1]
-        names_GS_p[k,1]<-gene_name_ord_p[k]
-        set_p[k]<-k
-      }
-    }
-
-    in_GS_p<-cbind(names_GS_p,matrix_stat_p)
-    in_GS_p<-na.omit(in_GS_p) #which genes are in gene set
-    colnames(in_GS_p)<-c("gene name","test")
-    set_p<-na.omit(set_p)
-
-    N_R_p<-sum(abs(as.numeric((in_GS_p[,2]))))
+    N_R_p<-sum(abs(as.numeric((l_p[,2]))))
 
     ES_matrix_p<-ES(ord_p[,1], rownames(ord_p), P_miss,N_R_p,as.character(da))
 
