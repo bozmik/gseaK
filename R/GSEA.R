@@ -47,13 +47,23 @@ gseaK <- function(expr, pheno, gSets, stest, abs, kernel, n.perm, correction) {
   gene_name_ord<-rownames(ord)
 
 
-  n_perm<-1000 ###number of permutations
+  n_perm<-10 ###number of permutations
   n_gene_set<-ncol(gSets)
   result<-matrix(nrow = n_gene_set,ncol=8)
   fraction<-matrix(nrow=1,ncol=1)
   colnames(result)<-c('Gene Set','ES_obs','p-value','NES','FDR','','p_val_kerel','p-val_BH_ker')
 
 
+  ###shuffle
+  n_genes=nrow(expr)
+  index<-seq(1,n_cl,1)
+
+  index_ph<-permutation(index,n_perm)
+
+
+
+
+t=1
   for (t in 1:n_gene_set){
     da=as.matrix(gSets[,t][!is.na(gSets[,t])])  ##Gene set
     name_gene<-as.vector(colnames(gSets[t]))  ##name of GS
@@ -89,50 +99,66 @@ gseaK <- function(expr, pheno, gSets, stest, abs, kernel, n.perm, correction) {
     N_R<-sum(abs(as.numeric((in_GS[,2]))))
     P_miss<-(1/(N-N_H))
 
-    P_hit_vec<-matrix(nrow=x$N)
-    P_miss_vec<-matrix(nrow=x$N)
-    ES<-matrix(nrow=x$N)
-    is_in_GS<-matrix(nrow=x$N)
-    ES_matrix<-cbind(x$ord[,1],is_in_GS,P_hit_vec,P_miss_vec,ES)
-    colnames(ES_matrix)=c("t-statistic,","presence in GS","P_hit","P_miss","ES")
-
-    data_input<-list(ord=ord,gene_name_ord=gene_name_ord,P_miss=P_miss,N_R=N_R,da=da)
-
-    ##fun_ES_compiled <- cmpfun(fun_ES)
-
-    #ES_matrix<-fun_ES_compiled(data_input)
-
-    r<- ES(stat[,1], gene_name_ord, P_miss,N_R,as.character(da))
+    ES_matrix<- ES(ord[,1], gene_name_ord, P_miss,N_R,as.character(da))
+    colnames(ES_matrix)=c("P_hit","P_miss","ES")
 
 
     rownames(ES_matrix)<-gene_name_ord
 
-    sum_ES=max(abs(ES_matrix[,5]),na.rm = T)
-    x_ES<-which(abs(ES_matrix[,5])==sum_ES)
+    sum_ES=max(abs(ES_matrix[,3]),na.rm = T)
+    x_ES<-which(abs(ES_matrix[,3])==sum_ES)
 
-    ES_obs<-ES_matrix[x_ES,5]
+    ES_obs<-ES_matrix[x_ES,3]
 
     ######...plots
 
-    n_ph=length(class)
-    ES_p<-matrix(nrow=n_perm,ncol=1)
-    NES_p<-matrix(nrow=n_perm,ncol=1)
-
-    n_genes=nrow(A)
-    index<-seq(1,n_ph,1)
-
+    ES_p=matrix(nrow=n_perm)
 
     ###permutations
 
-    ####poprawić!!!! w C++?
+    for(i in 1:n_perm){
+    subset<- class[index_ph[i,]]
+    expr2 <- expr[,index_ph[i,]]
+    p_stat_t_p<-as.matrix(diffmean.stat(t(expr2),subset))
 
-   ##cl <- makeCluster(detectCores(), type='PSOCK')
-  ##  registerDoParallel(cl)
 
-  ##ES_p<-foreach(i=1:n_perm,.combine=c) %dopar% perm_compiled(A,phenotyp,ph,P_miss,da=da,f_abs=f_abs)
-  ##  ES_p<-unlist(ES_p)
+    p_stat_t_p<-as.data.frame(abs(p_stat_t_p))
 
-  ##  stopCluster(cl)
+
+    ord_p=p_stat_t_p[order(p_stat_t_p,decreasing = T),,drop=F]   ###ranking of genes
+    gene_name_ord_p<-as.matrix(rownames(ord_p))
+
+    N<-dim(ord_p)[1]
+
+    names_GS_p<-matrix(nrow=N,ncol=1)
+    matrix_stat_p<-matrix(nrow=N,ncol=1)
+    set_p<-matrix(nrow=N,ncol=1)
+
+    for(k in 1:N){
+      wh2<-which(as.vector(gene_name_ord[k]==da,'numeric')==1)
+      if (length(wh2)!=0){
+        matrix_stat_p[k,]<-ord_p[k,1]
+        names_GS_p[k,1]<-gene_name_ord_p[k]
+        set_p[k]<-k
+      }
+    }
+
+    in_GS_p<-cbind(names_GS_p,matrix_stat_p)
+    in_GS_p<-na.omit(in_GS_p) #which genes are in gene set
+    colnames(in_GS_p)<-c("gene name","test")
+    set_p<-na.omit(set_p)
+
+    N_R_p<-sum(abs(as.numeric((in_GS_p[,2]))))
+
+    ES_matrix_p<-ES(ord_p[,1], rownames(ord_p), P_miss,N_R_p,as.character(da))
+
+    rownames(ES_matrix_p)<-gene_name_ord_p
+
+   max_ES_p <- max(abs(ES_matrix_p[,3]),na.rm = T)
+   x_ES_p<-which(abs(ES_matrix_p[,3])==max_ES_p)
+   ES_p[i]<-ES_matrix_p[x_ES_p,3]  ## obserwowane ES z kazdej permtacji
+    }
+
 
     ###plots
 
