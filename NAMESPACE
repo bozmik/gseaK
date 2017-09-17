@@ -1,4 +1,15 @@
 useDynLib(gseak)
 exportPattern("^[[:alpha:]]+")
 
+import(st)
+import(sfsmisc)
 importFrom(Rcpp, sourceCpp)
+importFrom("methods", "new")
+importFrom("stats", "density")
+
+exportMethods(gseaK)
+export(ES)
+export(ginGS)
+export(permutation)
+
+exportMethods(gseaK)

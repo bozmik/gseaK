@@ -1,15 +1,25 @@
 Package: gseak
 Type: Package
-Title: What the Package Does (Title Case)
+Title: GSEA
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
+Author: Bozena Mika-Gospodorz
+Maintainer: Bozena Mika-Gospodorz <bozena.mika1@gmail.com>
 Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+License: GPL-3
 LazyLoad: yes
 Encoding: UTF-8
 LazyData: true
+Depends:
+    R (>= 3.3.3)
 Imports:
-    Rcpp
+	st,
+	sfsmisc,
+	methods,
+	Rcpp (>= 0.12.11)
 LinkingTo: Rcpp
+Collate:
+	'gseaK.R'
+	'RcppExports.R'
+	'data.R'
+RoxygenNote: 6.0.1.9000

@@ -1,6 +1,13 @@
 #include <Rcpp.h>
 using namespace Rcpp;
 
+//' ginGS
+//'
+//' @param g CharacterVector
+//' @param gs CharacterVector
+//' @param stat NumericVector
+//' @export
+//' @rdname ginGS
 // [[Rcpp::export]]
 List ginGS(CharacterVector g, CharacterVector gs, NumericVector stat) {
   NumericVector statGS;

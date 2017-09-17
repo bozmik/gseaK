@@ -2,7 +2,15 @@
 #include <cstdlib>
 using namespace Rcpp;
 
-
+//' Functions that compute Enrichmnet Score
+//'
+//' @param stat NumericVector
+//' @param geneOrd intiger
+//' @param Pmiss double
+//' @param Nr double
+//' @param poz NumericVector
+//' @export
+//' @rdname ES
 // [[Rcpp::export]]
 NumericMatrix ES(NumericVector stat, CharacterVector geneOrd, double Pmiss, double Nr, NumericVector poz) {
   int N = geneOrd.size();

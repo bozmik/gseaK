@@ -4,6 +4,12 @@
 #include <algorithm>
 using namespace Rcpp;
 
+//' permutation
+//'
+//' @param x NumericVector
+//' @param n int
+//' @export
+//' @rdname permutation
 // [[Rcpp::export]]
 NumericMatrix permutation(NumericVector x, int n) {
   int s = x.size();
