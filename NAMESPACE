@@ -6,10 +6,12 @@ import(sfsmisc)
 importFrom(Rcpp, sourceCpp)
 importFrom("methods", "new")
 importFrom("stats", "density")
+import(doParallel)
 
 exportMethods(gseaK)
 export(ES)
 export(ginGS)
 export(permutation)
+
 
 exportMethods(gseaK)

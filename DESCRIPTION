@@ -16,6 +16,7 @@ Imports:
 	st,
 	sfsmisc,
 	methods,
+	doParallel,
 	Rcpp (>= 0.12.11)
 LinkingTo: Rcpp
 Collate:

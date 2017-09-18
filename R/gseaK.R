@@ -79,7 +79,6 @@ setMethod("gseaK", signature("data.frame"),
 
   index_ph<-permutation(index,n_perm)
 
-t=1
   for (t in 1:n_gene_set){
     da=as.matrix(gSets[,t][!is.na(gSets[,t])])  ##Gene set
     name_gene<-as.vector(colnames(gSets[t]))  ##name of GS
@@ -115,32 +114,41 @@ t=1
     ES_p=matrix(nrow=n_perm)
 
     ###permutations
+    cl <- makeCluster(detectCores(), type='PSOCK')
+    registerDoParallel(cl)
 
-    for(i in 1:n_perm){
-    expr2 <- expr[,index_ph[i,]]
-    p_stat_t_p<-as.matrix(diffmean.stat(t(expr2),class))
+    ES_p <- foreach(i=1:n_perm, .combine=c, .noexport = c("ginGS","ES")) %dopar% {
+    #  library(st)
+     # library(Rcpp)
+      expr2 <- expr[,index_ph[i,]]
+      p_stat_t_p <- as.matrix(diffmean.stat(t(expr2),class))
 
-    p_stat_t_p<-as.data.frame(abs(p_stat_t_p))
+      p_stat_t_p <- as.data.frame(abs(p_stat_t_p))
 
+      ord_p <- p_stat_t_p[order(p_stat_t_p,decreasing = T),,drop=F]   ###ranking of genes
+      gene_name_ord_p<-as.matrix(rownames(ord_p))
 
-    ord_p=p_stat_t_p[order(p_stat_t_p,decreasing = T),,drop=F]   ###ranking of genes
-    gene_name_ord_p<-as.matrix(rownames(ord_p))
+      N<-dim(ord_p)[1]
 
-    N<-dim(ord_p)[1]
+      #####Genes in GS
 
-    #####Genes in GS
-    l_p<-ginGS(gene_name_ord_p, as.character(da), ord_p[,1]);
+     # sourceCpp("ginGS.cpp")
 
-    N_R_p<-sum(abs(as.numeric((l_p$stat))))
+      l_p<-ginGS(gene_name_ord_p, as.character(da), ord_p[,1]);
 
-    ES_matrix_p<-ES(ord_p[,1], rownames(ord_p), P_miss,N_R_p,l_p$poz)
+      N_R_p<-sum(abs(as.numeric((l_p$stat))))
 
-    rownames(ES_matrix_p)<-gene_name_ord_p
+    #  sourceCpp("ES.cpp")
 
-   max_ES_p <- max(abs(ES_matrix_p[,3]),na.rm = T)
-   x_ES_p<-which(abs(ES_matrix_p[,3])==max_ES_p)
-   ES_p[i]<-ES_matrix_p[x_ES_p,3]  ## obserwowane ES z kazdej permtacji
+      ES_matrix_p<-ES(ord_p[,1], rownames(ord_p), P_miss,N_R_p,l_p$poz)
+
+      rownames(ES_matrix_p)<-gene_name_ord_p
+
+      max_ES_p <- max(abs(ES_matrix_p[,3]),na.rm = T)
+      x_ES_p<-which(abs(ES_matrix_p[,3])==max_ES_p)
+      ES_matrix_p[x_ES_p,3]  ## obserwowane ES z kazdej permtacji
     }
+
 
 
     ###plots
