@@ -12,6 +12,5 @@ exportMethods(gseaK)
 export(ES)
 export(ginGS)
 export(permutation)
+export(GSet)
 
-
-exportMethods(gseaK)
