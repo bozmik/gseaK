@@ -4,10 +4,12 @@
 \alias{plotDis}
 \title{plot Phit+Pmiss}
 \usage{
-plotDis(ES_matrix)
+plotDis(ES_matrix, name_gene_set)
 }
 \arguments{
 \item{ES_matrix}{\code{matrix} that stores Phit, Pmiss, and ES distributions}
+
+\item{name_gene_set}{GS name}
 }
 \value{
 Phit and Pmiss distributions.

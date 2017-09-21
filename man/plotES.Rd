@@ -4,7 +4,7 @@
 \alias{plotES}
 \title{plot ES}
 \usage{
-plotES(ES_matrix, ES_obs, x_ES, pos)
+plotES(ES_matrix, ES_obs, x_ES, pos, name_gene_set)
 }
 \arguments{
 \item{ES_matrix}{\code{matrix} that stores ES distribution}
@@ -14,6 +14,8 @@ plotES(ES_matrix, ES_obs, x_ES, pos)
 \item{x_ES}{position of ES value}
 
 \item{pos}{positions of genes from GS}
+
+\item{name_gene_set}{GS name}
 }
 \value{
 plot of ES distribution

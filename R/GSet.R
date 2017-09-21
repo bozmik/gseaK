@@ -11,6 +11,7 @@
 #' @param index_ph shuffled phenotype labels
 #' @param stest Rank metrics
 #' @param abs absolute value
+#' @param name_gene GS name
 #' @return returns a \code{vector} object
 #' @useDynLib gseaK
 #' @importFrom Rcpp sourceCpp
@@ -18,19 +19,19 @@
 #' @rdname GSet-methods
 #' @export
 setGeneric("GSet",
-           function(gSets, gene_name_ord, ord, n_perm, expr, class, index_ph, stest, abs)
+           function(gSets, gene_name_ord, ord, n_perm, expr, class, index_ph, stest, abs, name_gene)
              standardGeneric("GSet") )
 
 #' @aliases GSet-method
 #' @rdname GSet-methods
-setMethod("GSet", signature("vector","character", "vector","numeric","matrix","factor","matrix"),
-          function(gSets, gene_name_ord, ord, n_perm, expr, class, index_ph, stest, abs){
+setMethod("GSet", signature("vector","character", "vector","numeric","matrix","factor","matrix","character","character","character"),
+          function(gSets, gene_name_ord, ord, n_perm, expr, class, index_ph, stest, abs, name_gene){
 
 result<-matrix(nrow = 1,ncol=8)
 da=gSets[!is.na(gSets)]  ##Gene set
 #name_gene<-colnames(gSets)  ##name of GS
-#splitt<-strsplit(name_gene,'path.')
-#name_gene_set<-splitt[[1]][2]
+splitt<-strsplit(name_gene,'path.')
+name_gene_set<-splitt[[1]][2]
 #colnames(da)<-name_gene_set
 
 N_H<-length(da)  #n in GS
@@ -50,16 +51,16 @@ ES_matrix<- ES(ord, gene_name_ord, P_miss, N_R, l$pos)
 colnames(ES_matrix)=c("P_hit","P_miss","ES")
 rownames(ES_matrix)<-gene_name_ord
 
-plotDis(ES_matrix)
+plotDis(ES_matrix, name_gene_set)
 
 sum_ES=max(abs(ES_matrix[,3]),na.rm = T)
 x_ES<-which(abs(ES_matrix[,3])==sum_ES)
 
 ES_obs<-ES_matrix[x_ES,3]
 
-plotES(ES_matrix, ES_obs, x_ES, l$pos)
+plotES(ES_matrix, ES_obs, x_ES, l$pos, name_gene_set)
 
-ES_p=matrix(nrow=n_perm)
+ES_p=matrix(nrow=n.perm)
 
 ###permutations
 
@@ -118,7 +119,7 @@ ES_p <- foreach(i=1:n.perm, .combine=c, .noexport = c("ginGS","ES")) %dopar% {
 stopCluster(cl)
 
 dens <- density(ES_p)
-plotPerm(ES_p, ES_obs, dens)
+plotPerm(ES_p, ES_obs, dens, name_gene_set)
 
 ###plots
 

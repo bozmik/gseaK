@@ -94,8 +94,7 @@ setMethod("gseaK", signature("data.frame"),
   index<-seq(1,n_cl,1)
 
   index_ph<-permutation(index,n.perm)
-
-  result <- apply(gSets, 2, GSet, gene_name_ord, ord[,1], n.perm, expr, class, index_ph, stest, abs)
+  result <- sapply(gSets, GSet, gene_name_ord, ord[,1], n.perm, expr, class, index_ph, stest, abs, names(gSets))
 
   ##### Benjamini and Hochberg p-value correction
 

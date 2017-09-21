@@ -2,14 +2,19 @@
 #' plot Phit+Pmiss
 #'
 #' @param ES_matrix \code{matrix} that stores Phit, Pmiss, and ES distributions
+#' @param name_gene_set GS name
 #' @return Phit and Pmiss distributions.
 #'
 #' @export
 ######
-plotDis<-function(ES_matrix){
-plot(ES_matrix[,1],lwd=3,type = "l",col='blue',ylab =c('Cumulative distribution'),xlab = '')
+plotDis<-function(ES_matrix, name_gene_set){
+name_file<-paste(name_gene_set,c('dis','.png'),sep="_", collapse="")
+png(filename = name_file)
+
+plot(ES_matrix[,1],lwd=3,type = "l",col='blue',ylab =c('Cumulative distribution'),xlab = '', main=name_gene_set)
 lines(ES_matrix[,2],col='red',lwd=3)
 legend('bottomright',c(expression('P'['miss']),expression('P'['hit'])),col=c('red','blue'),cex=1.2,pch=16,bty = "n")
+dev.off()
 }
 
 # ---------------------------------------------------------------------------- #
@@ -19,13 +24,13 @@ legend('bottomright',c(expression('P'['miss']),expression('P'['hit'])),col=c('re
 #' @param ES_obs ES value
 #' @param x_ES position of ES value
 #' @param pos positions of genes from GS
+#' @param name_gene_set GS name
 #' @return plot of ES distribution
 #'
 #' @export
 ######
-plotES<-function(ES_matrix, ES_obs, x_ES, pos){
-name_gene_set <-c('a1')
-name_file<-paste(name_gene_set,c('.png'),sep="", collapse="")
+plotES<-function(ES_matrix, ES_obs, x_ES, pos, name_gene_set){
+name_file<-paste(name_gene_set,c('ES','.png'),sep="_", collapse="")
 png(filename = name_file)
 image_gene <- par(mfrow=c(2, 1))
 N <- dim(ES_matrix)[1]
@@ -51,11 +56,12 @@ dev.off()
 #' @param ES_p \code{vector} that stores ES_null values
 #' @param ES_obs ES value
 #' @param dens Kernel density estimation
+#' @param name_gene_set GS name
 #' @return plot of ES_null
 #'
 #' @export
 
-plotPerm<-function(ES_p, ES_obs, dens){
+plotPerm<-function(ES_p, ES_obs, dens, name_gene_set){
 if (min(ES_p)>ES_obs){
   x_lim1=ES_obs-0.1
   x_lim2=max(ES_p)+0.1
@@ -66,8 +72,7 @@ if (min(ES_p)>ES_obs){
   x_lim1=min(ES_p)-0.1
   x_lim2=max(ES_p)+0.1}
 
-name_gene_set<- c('a2')
-name_file<-paste(name_gene_set,c('per','.png'),sep="_", collapse="i")
+name_file<-paste(name_gene_set,c('per','.png'),sep="_", collapse="")
 png(filename = name_file)
 r<-hist(ES_p,freq=F,breaks=100,main=name_gene_set,xlim=c(x_lim1,x_lim2),xlab='ES',ylim = c(0,6))
 rug(ES_p)

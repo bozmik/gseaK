@@ -4,7 +4,7 @@
 \alias{plotPerm}
 \title{plot of ES_null}
 \usage{
-plotPerm(ES_p, ES_obs, dens)
+plotPerm(ES_p, ES_obs, dens, name_gene_set)
 }
 \arguments{
 \item{ES_p}{\code{vector} that stores ES_null values}
@@ -12,6 +12,8 @@ plotPerm(ES_p, ES_obs, dens)
 \item{ES_obs}{ES value}
 
 \item{dens}{Kernel density estimation}
+
+\item{name_gene_set}{GS name}
 }
 \value{
 plot of ES_null
