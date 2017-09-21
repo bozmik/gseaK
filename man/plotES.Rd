@@ -8,9 +8,15 @@ plotES(ES_matrix, ES_obs, x_ES, pos)
 }
 \arguments{
 \item{ES_matrix}{\code{matrix} that stores ES distribution}
+
+\item{ES_obs}{ES value}
+
+\item{x_ES}{position of ES value}
+
+\item{pos}{positions of genes from GS}
 }
 \value{
-Phit and Pmiss distributions.
+plot of ES distribution
 }
 \description{
 plot ES

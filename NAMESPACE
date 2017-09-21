@@ -8,6 +8,7 @@ import(mwt)
 importFrom(Rcpp, sourceCpp)
 importFrom("methods", "new")
 importFrom("stats", "density")
+importFrom("graphics", "hist")
 import(doParallel)
 
 exportMethods(gseaK)
@@ -18,4 +19,5 @@ export(GSet)
 exportMethods(GSet)
 export(plotDis)
 export(plotES)
+export(plotPerm)
 

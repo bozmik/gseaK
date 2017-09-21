@@ -11,11 +11,14 @@ plot(ES_matrix[,1],lwd=3,type = "l",col='blue',ylab =c('Cumulative distribution'
 lines(ES_matrix[,2],col='red',lwd=3)
 legend('bottomright',c(expression('P'['miss']),expression('P'['hit'])),col=c('red','blue'),cex=1.2,pch=16,bty = "n")
 }
+
 # ---------------------------------------------------------------------------- #
 #' plot ES
 #'
 #' @param ES_matrix \code{matrix} that stores ES distribution
-#'
+#' @param ES_obs ES value
+#' @param x_ES position of ES value
+#' @param pos positions of genes from GS
 #' @return plot of ES distribution
 #'
 #' @export
@@ -39,5 +42,39 @@ lines(rep(0,N),lwd=1.5,lty=1,col="black")
 Axis(side=1,las = 1, tck = -0.1)
 mtext(side = 1, "Gene List Rank", line = 2.5)
 #savePlot(filename=name_file,type="png")
+dev.off()
+}
+
+# ---------------------------------------------------------------------------- #
+#' plot of ES_null
+#'
+#' @param ES_p \code{vector} that stores ES_null values
+#' @param ES_obs ES value
+#' @param dens Kernel density estimation
+#' @return plot of ES_null
+#'
+#' @export
+
+plotPerm<-function(ES_p, ES_obs, dens){
+if (min(ES_p)>ES_obs){
+  x_lim1=ES_obs-0.1
+  x_lim2=max(ES_p)+0.1
+} else if(max(ES_p)<ES_obs) {
+  x_lim2=ES_obs+0.1
+  x_lim1=min(ES_p)-0.1
+}else {
+  x_lim1=min(ES_p)-0.1
+  x_lim2=max(ES_p)+0.1}
+
+name_gene_set<- c('a2')
+name_file<-paste(name_gene_set,c('per','.png'),sep="_", collapse="i")
+png(filename = name_file)
+r<-hist(ES_p,freq=F,breaks=100,main=name_gene_set,xlim=c(x_lim1,x_lim2),xlab='ES',ylim = c(0,6))
+rug(ES_p)
+#lines(ES_p)
+lines(dens,col='red',lwd = 2)
+lines(c(ES_obs, ES_obs), c(0, max(dens$y)-0.2), col = "steelblue", lwd = 3, lty = 22)
+text(ES_obs,(max(dens$y)-0.1), round(ES_obs, 4),cex=1.5)
+legend("topright",c(c("kernel density estymation"),c("observed ES")),pch=16,col=c("red","steelblue"),cex=1,bty = "n")
 dev.off()
 }

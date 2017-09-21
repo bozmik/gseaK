@@ -63,10 +63,9 @@ ES_p=matrix(nrow=n_perm)
 
 ###permutations
 
-#library(doParallel)
 cl <- makeCluster(detectCores(), type='PSOCK')
 registerDoParallel(cl)
-ES_p <- foreach(i=1:n_perm, .combine=c, .noexport = c("ginGS","ES")) %dopar% {
+ES_p <- foreach(i=1:n.perm, .combine=c, .noexport = c("ginGS","ES")) %dopar% {
 
   expr2 <- expr[,index_ph[i,]]
 
@@ -118,13 +117,15 @@ ES_p <- foreach(i=1:n_perm, .combine=c, .noexport = c("ginGS","ES")) %dopar% {
 }
 stopCluster(cl)
 
+dens <- density(ES_p)
+plotPerm(ES_p, ES_obs, dens)
 
 ###plots
 
 
 ### p-value
 #library(sfsmisc)
-dens <- density(ES_p)
+
 ##### poprawić!!!
 if(ES_obs>=0){
   p<-length(which(ES_p>=ES_obs))
