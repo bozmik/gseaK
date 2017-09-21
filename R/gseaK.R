@@ -83,7 +83,6 @@ setMethod("gseaK", signature("data.frame"),
   gene_name_ord<-rownames(ord)
 
 
-  n_perm<-10###number of permutations
   n_gene_set<-ncol(gSets)
   result<-matrix(nrow = 8,ncol=n_gene_set)
   fraction<-matrix(nrow=1,ncol=1)
@@ -94,9 +93,9 @@ setMethod("gseaK", signature("data.frame"),
   n_genes=nrow(expr)
   index<-seq(1,n_cl,1)
 
-  index_ph<-permutation(index,n_perm)
+  index_ph<-permutation(index,n.perm)
 
-  result<-apply(gSets, 2, GSet, gene_name_ord, ord[,1], n_perm, expr, class, index_ph, stest, abs)
+  result <- apply(gSets, 2, GSet, gene_name_ord, ord[,1], n.perm, expr, class, index_ph, stest, abs)
 
   ##### Benjamini and Hochberg p-value correction
 

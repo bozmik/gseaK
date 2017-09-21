@@ -50,6 +50,8 @@ ES_matrix<- ES(ord, gene_name_ord, P_miss, N_R, l$pos)
 colnames(ES_matrix)=c("P_hit","P_miss","ES")
 rownames(ES_matrix)<-gene_name_ord
 
+plotDis(ES_matrix)
+
 sum_ES=max(abs(ES_matrix[,3]),na.rm = T)
 x_ES<-which(abs(ES_matrix[,3])==sum_ES)
 
