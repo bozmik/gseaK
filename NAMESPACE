@@ -17,4 +17,5 @@ export(permutation)
 export(GSet)
 exportMethods(GSet)
 export(plotDis)
+export(plotES)
 

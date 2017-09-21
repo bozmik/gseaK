@@ -57,7 +57,7 @@ x_ES<-which(abs(ES_matrix[,3])==sum_ES)
 
 ES_obs<-ES_matrix[x_ES,3]
 
-######...plots
+plotES(ES_matrix, ES_obs, x_ES, l$pos)
 
 ES_p=matrix(nrow=n_perm)
 
