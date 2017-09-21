@@ -7,10 +7,10 @@
 \alias{GSet-method}
 \title{Gene Set}
 \usage{
-GSet(gSets, gene_name_ord, ord, n_perm, expr, class, index_ph)
+GSet(gSets, gene_name_ord, ord, n_perm, expr, class, index_ph, stest, abs)
 
 \S4method{GSet}{vector,character,vector,numeric,matrix,factor,matrix}(gSets,
-  gene_name_ord, ord, n_perm, expr, class, index_ph)
+  gene_name_ord, ord, n_perm, expr, class, index_ph, stest, abs)
 }
 \arguments{
 \item{gSets}{gene Set}
@@ -26,6 +26,10 @@ GSet(gSets, gene_name_ord, ord, n_perm, expr, class, index_ph)
 \item{class}{phenotype data}
 
 \item{index_ph}{shuffled phenotype labels}
+
+\item{stest}{Rank metrics}
+
+\item{abs}{absolute value}
 }
 \value{
 returns a \code{vector} object

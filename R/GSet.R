@@ -9,6 +9,8 @@
 #' @param expr expression dataset
 #' @param class phenotype data
 #' @param index_ph shuffled phenotype labels
+#' @param stest Rank metrics
+#' @param abs absolute value
 #' @return returns a \code{vector} object
 #' @useDynLib gseaK
 #' @importFrom Rcpp sourceCpp
@@ -16,13 +18,13 @@
 #' @rdname GSet-methods
 #' @export
 setGeneric("GSet",
-           function(gSets, gene_name_ord, ord, n_perm, expr, class, index_ph)
+           function(gSets, gene_name_ord, ord, n_perm, expr, class, index_ph, stest, abs)
              standardGeneric("GSet") )
 
 #' @aliases GSet-method
 #' @rdname GSet-methods
 setMethod("GSet", signature("vector","character", "vector","numeric","matrix","factor","matrix"),
-          function(gSets, gene_name_ord, ord, n_perm, expr, class, index_ph){
+          function(gSets, gene_name_ord, ord, n_perm, expr, class, index_ph, stest, abs){
 
 result<-matrix(nrow = 1,ncol=8)
 da=gSets[!is.na(gSets)]  ##Gene set
@@ -63,12 +65,35 @@ ES_p=matrix(nrow=n_perm)
 cl <- makeCluster(detectCores(), type='PSOCK')
 registerDoParallel(cl)
 ES_p <- foreach(i=1:n_perm, .combine=c, .noexport = c("ginGS","ES")) %dopar% {
- #library(st)
-#  library(Rcpp)
-  expr2 <- expr[,index_ph[i,]]
-  p_stat_t_p <- as.matrix(diffmean.stat(t(expr2),class))
 
-  p_stat_t_p <- as.data.frame(abs(p_stat_t_p))
+  expr2 <- expr[,index_ph[i,]]
+
+  ###### Rank metrics
+  if(stest == "FC"){
+    p_stat_t_p <- as.matrix(diffmean.stat(t(expr2),class))
+  } else if(stest == "shrinkage.t"){
+    p_stat_t_p <- as.matrix(shrinkt.stat(t(expr2),class,var.equal=F,paired=FALSE, verbose=T))
+  } else if(stest == "2s.Bayesian"){
+    p_stat_t_p <- as.matrix(RankingFoxDimmic(expr2,class,type = "unpaired")@statistic)
+  } else if(stest == "Efron"){
+    p_stat_t_p <- as.matrix(RankingEbam(expr2,class,type = "unpaired")@statistic)
+  } else if(stest == "SAM"){
+    p_stat_t_p <- as.matrix(RankingSam(expr2,class,type = "unpaired")@statistic)
+  } else if(stest == "penalized.t"){
+    p_stat_t_p <- as.matrix(RankingSoftthresholdT(expr2,class, type = c("unpaired"))@statistic)
+  } else if(stest == "bayesian.t"){
+    p_stat_t_p <- as.matrix(RankingBaldiLong(expr2,class, type = c("unpaired"))@statistic)
+  } else if(stest == "moderatet.t"){
+    p_stat_t_p <- as.matrix(RankingLimma(expr2,class,type = c("unpaired"))@statistic)
+  } else if(stest == "moderated.wt"){
+    p_stat_t_p <- as.matrix(mwt(expr2,class,log.it = FALSE)$MWT)
+  }
+  rownames(p_stat_t_p)=rownames(expr2)
+
+  if (abs=="TRUE") {
+    p_stat_t_p<-as.data.frame(abs(p_stat_t_p))
+  } else {
+    p_stat_t_p<-as.data.frame(p_stat_t_p)}
 
   ord_p <- p_stat_t_p[order(p_stat_t_p,decreasing = T),,drop=F]   ###ranking of genes
   gene_name_ord_p<-as.matrix(rownames(ord_p))
@@ -77,13 +102,9 @@ ES_p <- foreach(i=1:n_perm, .combine=c, .noexport = c("ginGS","ES")) %dopar% {
 
   #####Genes in GS
 
- # sourceCpp("ginGS.cpp")
-
   l_p<-ginGS(gene_name_ord_p, as.character(da), ord_p[,1]);
 
   N_R_p<-sum(abs(as.numeric((l_p$stat))))
-
-#  sourceCpp("ES.cpp")
 
   ES_matrix_p<-ES(ord_p[,1], rownames(ord_p), P_miss,N_R_p,l_p$pos)
 
@@ -142,5 +163,5 @@ result[7]<-p_val_kern
 
 return(result)
 
-          }
+  }
 )

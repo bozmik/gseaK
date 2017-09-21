@@ -3,6 +3,8 @@ exportPattern("^[[:alpha:]]+")
 
 import(st)
 import(sfsmisc)
+import(GeneSelector)
+import(mwt)
 importFrom(Rcpp, sourceCpp)
 importFrom("methods", "new")
 importFrom("stats", "density")

@@ -50,8 +50,25 @@ setMethod("gseaK", signature("data.frame"),
   in_gr2=which(class==1)
 
  ###### Rank metrics
-  if(stest == "FC")
+  if(stest == "FC"){
     p_stat_t <- as.matrix(diffmean.stat(t(expr),class))
+  } else if(stest == "shrinkage.t"){
+   p_stat_t <- as.matrix(shrinkt.stat(t(expr),class,var.equal=F,paired=FALSE, verbose=T))
+  } else if(stest == "2s.Bayesian"){
+    p_stat_t <- as.matrix(RankingFoxDimmic(expr,class,type = "unpaired")@statistic)
+  } else if(stest == "Efron"){
+    p_stat_t <- as.matrix(RankingEbam(expr,class,type = "unpaired")@statistic)
+  } else if(stest == "SAM"){
+    p_stat_t <- as.matrix(RankingSam(expr,class,type = "unpaired")@statistic)
+  } else if(stest == "penalized.t"){
+    p_stat_t <- as.matrix(RankingSoftthresholdT(expr,class, type = c("unpaired"))@statistic)
+  } else if(stest == "bayesian.t"){
+     p_stat_t <- as.matrix(RankingBaldiLong(expr,class, type = c("unpaired"))@statistic)
+  } else if(stest == "moderatet.t"){
+    p_stat_t <- as.matrix(RankingLimma(expr,class,type = c("unpaired"))@statistic)
+  } else if(stest == "moderated.wt"){
+    p_stat_t <- as.matrix(mwt(expr,class,log.it = FALSE)$MWT)
+  }
 
   rownames(p_stat_t)=rownames(expr)
 
@@ -66,7 +83,7 @@ setMethod("gseaK", signature("data.frame"),
   gene_name_ord<-rownames(ord)
 
 
-  n_perm<-1000###number of permutations
+  n_perm<-10###number of permutations
   n_gene_set<-ncol(gSets)
   result<-matrix(nrow = 8,ncol=n_gene_set)
   fraction<-matrix(nrow=1,ncol=1)
@@ -79,7 +96,7 @@ setMethod("gseaK", signature("data.frame"),
 
   index_ph<-permutation(index,n_perm)
 
-  result<-apply(gSets, 2, GSet, gene_name_ord, ord[,1], n_perm, expr, class, index_ph)
+  result<-apply(gSets, 2, GSet, gene_name_ord, ord[,1], n_perm, expr, class, index_ph, stest, abs)
 
   ##### Benjamini and Hochberg p-value correction
 
