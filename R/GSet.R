@@ -38,13 +38,13 @@ N<-length(gene_name_ord)  #N ordered genes
 #library(Rcpp)
 #sourceCpp("ginGS.cpp")
 #####Genes in GS
-l<-ginGS(gene_name_ord, as.character(da), ord);
+l<-ginGS(gene_name_ord,as.character(da),ord)
+
 
 N_R<-sum(abs(as.numeric((l$stat))))
 P_miss<-(1/(N-N_H))
 
-#sourceCpp("ES.cpp")
-ES_matrix<- ES(ord, gene_name_ord, P_miss, N_R, l$poz)
+ES_matrix<- ES(ord, gene_name_ord, P_miss, N_R, l$pos)
 colnames(ES_matrix)=c("P_hit","P_miss","ES")
 rownames(ES_matrix)<-gene_name_ord
 
@@ -63,8 +63,8 @@ ES_p=matrix(nrow=n_perm)
 cl <- makeCluster(detectCores(), type='PSOCK')
 registerDoParallel(cl)
 ES_p <- foreach(i=1:n_perm, .combine=c, .noexport = c("ginGS","ES")) %dopar% {
-#  library(st)
- # library(Rcpp)
+ #library(st)
+#  library(Rcpp)
   expr2 <- expr[,index_ph[i,]]
   p_stat_t_p <- as.matrix(diffmean.stat(t(expr2),class))
 
@@ -85,7 +85,7 @@ ES_p <- foreach(i=1:n_perm, .combine=c, .noexport = c("ginGS","ES")) %dopar% {
 
 #  sourceCpp("ES.cpp")
 
-  ES_matrix_p<-ES(ord_p[,1], rownames(ord_p), P_miss,N_R_p,l_p$poz)
+  ES_matrix_p<-ES(ord_p[,1], rownames(ord_p), P_miss,N_R_p,l_p$pos)
 
   rownames(ES_matrix_p)<-gene_name_ord_p
 

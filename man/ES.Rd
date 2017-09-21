@@ -9,7 +9,7 @@ ES(stat, geneOrd, Pmiss, Nr, poz)
 \arguments{
 \item{stat}{NumericVector}
 
-\item{geneOrd}{intiger}
+\item{geneOrd}{CharacterVector}
 
 \item{Pmiss}{double}
 

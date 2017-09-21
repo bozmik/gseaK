@@ -50,8 +50,8 @@ setMethod("gseaK", signature("data.frame"),
   in_gr2=which(class==1)
 
  ###### Rank metrics
- # if(stest=="FC")
-    p_stat_t<-as.matrix(diffmean.stat(t(expr),class))
+  if(stest == "FC")
+    p_stat_t <- as.matrix(diffmean.stat(t(expr),class))
 
   rownames(p_stat_t)=rownames(expr)
 
@@ -66,11 +66,11 @@ setMethod("gseaK", signature("data.frame"),
   gene_name_ord<-rownames(ord)
 
 
-  n_perm<-5###number of permutations
+  n_perm<-1000###number of permutations
   n_gene_set<-ncol(gSets)
   result<-matrix(nrow = 8,ncol=n_gene_set)
   fraction<-matrix(nrow=1,ncol=1)
-  colnames(result)<-c('Gene Set','ES_obs','p-value','NES','FDR','','p_val_kerel','p-val_BH_ker')
+  rownames(result)<-c('Gene Set','ES_obs','p-value','NES','FDR','','p_val_kerel','p-val_BH_ker')
 
 
   ###shuffle
@@ -82,7 +82,6 @@ setMethod("gseaK", signature("data.frame"),
   result<-apply(gSets, 2, GSet, gene_name_ord, ord[,1], n_perm, expr, class, index_ph)
 
   ##### Benjamini and Hochberg p-value correction
-
 
   ###poprawić!!!!
  # FDR <-function(x){

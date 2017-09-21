@@ -5,7 +5,7 @@ using namespace Rcpp;
 //' Functions that compute Enrichmnet Score
 //'
 //' @param stat NumericVector
-//' @param geneOrd intiger
+//' @param geneOrd CharacterVector
 //' @param Pmiss double
 //' @param Nr double
 //' @param poz NumericVector
