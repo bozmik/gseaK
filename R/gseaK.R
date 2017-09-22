@@ -45,7 +45,7 @@ setMethod("gseaK", signature("data.frame"),
   levels(class)=list('0'='c','1'='d')
 
   ####gene sets
-  gSets<-data.frame(gSets[-1,])
+  gSets[1,]<-colnames(gSets)
 
   ## sample division into 2 groups
   n_gr<-as.numeric(table(class)) ### size of the groups
@@ -87,9 +87,8 @@ setMethod("gseaK", signature("data.frame"),
 
 
   n_gene_set<-ncol(gSets)
-  result<-matrix(nrow = 8,ncol=n_gene_set)
+  result<-matrix(nrow = 7,ncol=n_gene_set)
   fraction<-matrix(nrow=1,ncol=1)
-  rownames(result)<-c('Gene Set','ES_obs','p-value','NES','FDR','','p_val_kerel','p-val_BH_ker')
 
 
   ###shuffle
@@ -97,7 +96,9 @@ setMethod("gseaK", signature("data.frame"),
   index<-seq(1,n_cl,1)
 
   index_ph<-permutation(index,n.perm)
-  result <- sapply(gSets, 2, GSet, gene_name_ord, ord[,1], n.perm, expr, class, index_ph, stest, abs, names(gSets)[i], plot1, plot2, plot3, simplify=TRUE)
+
+  result <- sapply(gSets, GSet, gene_name_ord, ord[,1], n.perm, expr, class, index_ph, stest, abs, plot1, plot2, plot3, simplify=TRUE)
+  rownames(result)<-c('ES_obs','p-value','NES','FDR','','p_val_kerel','p-val_BH_ker')
 
   ##### Benjamini and Hochberg p-value correction
 

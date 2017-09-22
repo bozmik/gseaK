@@ -19,16 +19,18 @@
 #' @rdname GSet-methods
 #' @export
 setGeneric("GSet",
-           function(gSets, gene_name_ord, ord, n_perm, expr, class, index_ph, stest, abs, name_gene, plot1, plot2, plot3)
+           function(gSets, gene_name_ord, ord, n_perm, expr, class, index_ph, stest, abs, plot1, plot2, plot3)
              standardGeneric("GSet") )
 
 #' @aliases GSet-method
 #' @rdname GSet-methods
 setMethod("GSet", signature("vector","character", "vector"),
-          function(gSets, gene_name_ord, ord, n_perm, expr, class, index_ph, stest, abs, name_gene, plot1, plot2, plot3){
+          function(gSets, gene_name_ord, ord, n_perm, expr, class, index_ph, stest, abs, plot1, plot2, plot3){
 
-result<-matrix(nrow = 1,ncol=8)
-da=gSets[!is.na(gSets)]  ##Gene set
+name_gene <- gSets[1]
+gSets <- as.numeric(gSets[-1])
+result<-matrix(nrow = 1,ncol=7)
+da=as.numeric(gSets[!is.na(gSets)])  ##Gene set
 #name_gene<-colnames(gSets)  ##name of GS
 splitt<-strsplit(name_gene,'path.')
 name_gene_set<-splitt[[1]][2]
@@ -159,12 +161,11 @@ if(ES_obs>=0){
 #    fraction=fr/fr_neg
 #  }
 
-result[1]<-name_gene_set
-result[2]<-ES_obs
-result[3]<-p_val
-#    result[t,4]<-NES ##NES observed
-##  result[t,6]<-fraction
-result[7]<-p_val_kern
+result[1]<-ES_obs
+result[2]<-p_val
+#    result[t,3]<-NES ##NES observed
+##  result[t,5]<-fraction
+result[6]<-p_val_kern
 
 return(result)
 
