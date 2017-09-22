@@ -8,7 +8,7 @@
 #' @export
 ######
 plotDis<-function(ES_matrix, name_gene_set){
-name_file<-paste(name_gene_set,c('dis','.png'),sep="_", collapse="")
+name_file<-paste(name_gene_set,c('plot1'),c('.png'),sep="_", collapse = "")
 png(filename = name_file)
 
 plot(ES_matrix[,1],lwd=3,type = "l",col='blue',ylab =c('Cumulative distribution'),xlab = '', main=name_gene_set)
@@ -30,7 +30,7 @@ dev.off()
 #' @export
 ######
 plotES<-function(ES_matrix, ES_obs, x_ES, pos, name_gene_set){
-name_file<-paste(name_gene_set,c('ES','.png'),sep="_", collapse="")
+name_file<-paste(name_gene_set,c('plot2'),c('.png'),sep="_", collapse = "")
 png(filename = name_file)
 image_gene <- par(mfrow=c(2, 1))
 N <- dim(ES_matrix)[1]
@@ -72,7 +72,7 @@ if (min(ES_p)>ES_obs){
   x_lim1=min(ES_p)-0.1
   x_lim2=max(ES_p)+0.1}
 
-name_file<-paste(name_gene_set,c('per','.png'),sep="_", collapse="")
+name_file<-paste(name_gene_set,c('plot3'),c('.png'),sep="_", collapse = "")
 png(filename = name_file)
 r<-hist(ES_p,freq=F,breaks=100,main=name_gene_set,xlim=c(x_lim1,x_lim2),xlab='ES',ylim = c(0,6))
 rug(ES_p)

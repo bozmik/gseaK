@@ -8,10 +8,12 @@
 \title{Gene Set Enrichment Analysis}
 \usage{
 gseaK(expr, pheno, gSets, stest = "FC", abs = TRUE, kernel = TRUE,
-  n.perm = 1000, correction = TRUE)
+  n.perm = 1000, correction = TRUE, plot1 = TRUE, plot2 = TRUE,
+  plot3 = TRUE)
 
 \S4method{gseaK}{data.frame}(expr, pheno, gSets, stest = "FC", abs = TRUE,
-  kernel = TRUE, n.perm = 1000, correction = TRUE)
+  kernel = TRUE, n.perm = 1000, correction = TRUE, plot1 = TRUE,
+  plot2 = TRUE, plot3 = TRUE)
 }
 \arguments{
 \item{expr}{expression data}

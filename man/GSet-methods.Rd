@@ -3,16 +3,15 @@
 \docType{methods}
 \name{GSet}
 \alias{GSet}
-\alias{GSet,vector,character,vector,numeric,matrix,factor,matrix,character,character,character-method}
+\alias{GSet,numeric,vector,character,vector-method}
 \alias{GSet-method}
 \title{Gene Set}
 \usage{
-GSet(gSets, gene_name_ord, ord, n_perm, expr, class, index_ph, stest, abs,
-  name_gene)
+GSet(i, gSets, gene_name_ord, ord, n_perm, expr, class, index_ph, stest, abs,
+  name_gene, plot1, plot2, plot3)
 
-
-  \S4method{GSet}{vector,character,vector,numeric,matrix,factor,matrix,character,character,character}(gSets,
-  gene_name_ord, ord, n_perm, expr, class, index_ph, stest, abs, name_gene)
+\S4method{GSet}{numeric,vector,character,vector}(i, gSets, gene_name_ord, ord,
+  n_perm, expr, class, index_ph, stest, abs, name_gene, plot1, plot2, plot3)
 }
 \arguments{
 \item{gSets}{gene Set}

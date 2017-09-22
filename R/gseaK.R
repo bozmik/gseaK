@@ -22,13 +22,16 @@ setGeneric("gseaK",
                     abs = TRUE,
                     kernel = TRUE,
                     n.perm = 1000,
-                    correction =TRUE)
+                    correction =TRUE,
+                    plot1 = TRUE,
+                    plot2 = TRUE,
+                    plot3 = TRUE)
              standardGeneric("gseaK") )
 
 #' @aliases gseaK-method
 #' @rdname gseaK-methods
 setMethod("gseaK", signature("data.frame"),
-         function(expr, pheno, gSets, stest, abs, kernel, n.perm, correction){
+         function(expr, pheno, gSets, stest, abs, kernel, n.perm, correction, plot1, plot2, plot3){
 
   ####expression data
   expr <- data.matrix(expr)[,-1]
@@ -72,7 +75,7 @@ setMethod("gseaK", signature("data.frame"),
 
   rownames(p_stat_t)=rownames(expr)
 
-  if (abs=="TRUE") {
+  if (abs==TRUE) {
     stat<-as.data.frame(abs(p_stat_t[,1]))
   } else {
     stat<-as.data.frame(p_stat_t[,1])}
@@ -94,7 +97,7 @@ setMethod("gseaK", signature("data.frame"),
   index<-seq(1,n_cl,1)
 
   index_ph<-permutation(index,n.perm)
-  result <- sapply(gSets, GSet, gene_name_ord, ord[,1], n.perm, expr, class, index_ph, stest, abs, names(gSets))
+  result <- sapply(gSets, 2, GSet, gene_name_ord, ord[,1], n.perm, expr, class, index_ph, stest, abs, names(gSets)[i], plot1, plot2, plot3, simplify=TRUE)
 
   ##### Benjamini and Hochberg p-value correction
 
