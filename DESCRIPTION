@@ -17,6 +17,8 @@ Imports:
 	sfsmisc,
 	methods,
 	doParallel,
+	foreach,
+	parallel,
 	GeneSelector,
 	mwt,
 	Rcpp (>= 0.12.11)

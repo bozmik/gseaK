@@ -10,6 +10,9 @@
 #' @param kernel Kernal density funcion
 #' @param n.perm number of permutations
 #' @param correction multiple hypothesis testing
+#' @param plot1 plot1
+#' @param plot2 plot2
+#' @param plot3 plo3
 #' @return returns a \code{matrix} object
 #' @useDynLib gseaK
 #' @importFrom Rcpp sourceCpp

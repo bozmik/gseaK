@@ -5,13 +5,15 @@
 #' @param gSets gene Set
 #' @param gene_name_ord ordered gene names
 #' @param ord ordered values of statistic
-#' @param n_perm number of permutations
+#' @param n.perm number of permutations
 #' @param expr expression dataset
 #' @param class phenotype data
 #' @param index_ph shuffled phenotype labels
 #' @param stest Rank metrics
 #' @param abs absolute value
-#' @param name_gene GS name
+#' @param plot1 plot1
+#' @param plot2 plot2
+#' @param plot3 plot3
 #' @return returns a \code{vector} object
 #' @useDynLib gseaK
 #' @importFrom Rcpp sourceCpp
@@ -19,13 +21,13 @@
 #' @rdname GSet-methods
 #' @export
 setGeneric("GSet",
-           function(gSets, gene_name_ord, ord, n_perm, expr, class, index_ph, stest, abs, plot1, plot2, plot3)
+           function(gSets, gene_name_ord, ord, n.perm, expr, class, index_ph, stest, abs, plot1, plot2, plot3)
              standardGeneric("GSet") )
 
 #' @aliases GSet-method
 #' @rdname GSet-methods
 setMethod("GSet", signature("vector","character", "vector"),
-          function(gSets, gene_name_ord, ord, n_perm, expr, class, index_ph, stest, abs, plot1, plot2, plot3){
+          function(gSets, gene_name_ord, ord, n.perm, expr, class, index_ph, stest, abs, plot1, plot2, plot3){
 
 name_gene <- gSets[1]
 gSets <- as.numeric(gSets[-1])
@@ -133,13 +135,13 @@ if(plot3 == TRUE){
 ##### poprawić!!!
 if(ES_obs>=0){
   p<-length(which(ES_p>=ES_obs))
-  p_val<-p/n_perm
+  p_val<-p/n.perm
   if (mean(abs(ES_p[ES_p>=0]))=='NaN') NES=0 else NES<-ES_obs/mean(ES_p[ES_p>=0])
   lll<-which(dens$x>ES_obs)
   if (length(lll)==0) p_val_kern<-0 else p_val_kern<-integrate.xy(dens$x[lll],dens$y[lll])
 }else{
   p<-length(which(ES_p<=ES_obs))
-  p_val<-p/n_perm
+  p_val<-p/n.perm
   if (mean(abs(ES_p[ES_p<0]))=='NaN') NES=0 else NES<-ES_obs/mean(abs(ES_p[ES_p<0]))
   lll<-which(dens$x<ES_obs)
   if (length(lll)==0) p_val_kern<-0 else p_val_kern<-integrate.xy(dens$x[lll],dens$y[lll])

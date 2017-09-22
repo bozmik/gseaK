@@ -31,6 +31,12 @@ gseaK(expr, pheno, gSets, stest = "FC", abs = TRUE, kernel = TRUE,
 \item{n.perm}{number of permutations}
 
 \item{correction}{multiple hypothesis testing}
+
+\item{plot1}{plot1}
+
+\item{plot2}{plot2}
+
+\item{plot3}{plo3}
 }
 \value{
 returns a \code{matrix} object

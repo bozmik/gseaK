@@ -7,10 +7,10 @@
 \alias{GSet-method}
 \title{Gene Set}
 \usage{
-GSet(gSets, gene_name_ord, ord, n_perm, expr, class, index_ph, stest, abs,
+GSet(gSets, gene_name_ord, ord, n.perm, expr, class, index_ph, stest, abs,
   plot1, plot2, plot3)
 
-\S4method{GSet}{vector,character,vector}(gSets, gene_name_ord, ord, n_perm,
+\S4method{GSet}{vector,character,vector}(gSets, gene_name_ord, ord, n.perm,
   expr, class, index_ph, stest, abs, plot1, plot2, plot3)
 }
 \arguments{
@@ -20,7 +20,7 @@ GSet(gSets, gene_name_ord, ord, n_perm, expr, class, index_ph, stest, abs,
 
 \item{ord}{ordered values of statistic}
 
-\item{n_perm}{number of permutations}
+\item{n.perm}{number of permutations}
 
 \item{expr}{expression dataset}
 
@@ -32,7 +32,11 @@ GSet(gSets, gene_name_ord, ord, n_perm, expr, class, index_ph, stest, abs,
 
 \item{abs}{absolute value}
 
-\item{name_gene}{GS name}
+\item{plot1}{plot1}
+
+\item{plot2}{plot2}
+
+\item{plot3}{plot3}
 }
 \value{
 returns a \code{vector} object
