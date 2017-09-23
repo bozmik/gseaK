@@ -74,7 +74,7 @@ if (min(ES_p)>ES_obs){
 
 name_file<-paste(name_gene_set,c('plot3'),c('.png'),sep="_", collapse = "")
 png(filename = name_file)
-r<-hist(ES_p,freq=F,breaks=100,main=name_gene_set,xlim=c(x_lim1,x_lim2),xlab='ES',ylim = c(0,6))
+r<-hist(ES_p,freq=F,breaks=100,main=name_gene_set,xlim=c(x_lim1,x_lim2),xlab='ES')
 rug(ES_p)
 #lines(ES_p)
 lines(dens,col='red',lwd = 2)

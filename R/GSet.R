@@ -147,26 +147,25 @@ if(ES_obs>=0){
   if (length(lll)==0) p_val_kern<-0 else p_val_kern<-integrate.xy(dens$x[lll],dens$y[lll])
 }
 
+mp<-mean(ES_p[ES_p>=0])
+mn<-mean(abs(ES_p[ES_p<0]))
 
-## NES_p<-fun(ES_p)
-##  NES_p<-cbind(ES_p,NES_p)
-##    colnames(NES_p)<-c('ES_p','NES_p')
+NES_p <- NES(ES_p, mp, mn)
 
-
-##   if(NES>=0){
-#    fr<-length(which(NES_p[,2]>=NES))  #fraction
-#    fr_poz<-length(which(NES_p[,2]>=0))
-#    fraction=fr/fr_poz
-#  }else{
-#    fr<-length(which(NES_p[,2]<=NES))
-#    fr_neg<-length(which(NES_p[,2]<0))
-#    fraction=fr/fr_neg
-#  }
+if(NES>=0){
+  fr<-length(which(NES_p >= NES))  #fraction
+  fr_poz<-length(which(NES_p >= 0))
+  fraction=fr/fr_poz
+}else{
+  fr<-length(which(NES_p <= NES))
+  fr_neg<-length(which(NES_p < 0))
+  fraction=fr/fr_neg
+}
 
 result[1]<-ES_obs
 result[2]<-p_val
-#    result[t,3]<-NES ##NES observed
-##  result[t,5]<-fraction
+result[3]<-NES ##NES observed
+result[5]<-fraction
 result[6]<-p_val_kern
 
 return(result)

@@ -33,6 +33,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// NES
+NumericVector NES(NumericVector x, double mp, double mn);
+RcppExport SEXP gseak_NES(SEXP xSEXP, SEXP mpSEXP, SEXP mnSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< double >::type mp(mpSEXP);
+    Rcpp::traits::input_parameter< double >::type mn(mnSEXP);
+    rcpp_result_gen = Rcpp::wrap(NES(x, mp, mn));
+    return rcpp_result_gen;
+END_RCPP
+}
 // permutation
 NumericMatrix permutation(NumericVector x, int n);
 RcppExport SEXP gseak_permutation(SEXP xSEXP, SEXP nSEXP) {
@@ -49,6 +62,7 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"gseak_ES", (DL_FUNC) &gseak_ES, 5},
     {"gseak_ginGS", (DL_FUNC) &gseak_ginGS, 3},
+    {"gseak_NES", (DL_FUNC) &gseak_NES, 3},
     {"gseak_permutation", (DL_FUNC) &gseak_permutation, 2},
     {NULL, NULL, 0}
 };

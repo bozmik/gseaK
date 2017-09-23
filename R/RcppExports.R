@@ -25,6 +25,17 @@ ginGS <- function(g, gs, stat) {
     .Call('gseak_ginGS', PACKAGE = 'gseak', g, gs, stat)
 }
 
+#' Function to compute NES
+#'
+#' @param x ES_p vector
+#' @param mp mean value of ES_p>=0
+#' @param mn mean value of ES_p<0
+#' @export
+#' @rdname NES
+NES <- function(x, mp, mn) {
+    .Call('gseak_NES', PACKAGE = 'gseak', x, mp, mn)
+}
+
 #' permutation
 #'
 #' @param x NumericVector
