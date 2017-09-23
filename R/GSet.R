@@ -92,9 +92,10 @@ ES_p <- foreach(i=1:n.perm, .combine=c, .noexport = c("ginGS","ES")) %dopar% {
     p_stat_t_p <- as.matrix(RankingBaldiLong(expr2,class, type = c("unpaired"))@statistic)
   } else if(stest == "moderatet.t"){
     p_stat_t_p <- as.matrix(RankingLimma(expr2,class,type = c("unpaired"))@statistic)
-  } else if(stest == "moderated.wt"){
-    p_stat_t_p <- as.matrix(mwt(expr2,class,log.it = FALSE)$MWT)
   }
+  ##else if(stest == "moderated.wt"){
+  #  p_stat_t_p <- as.matrix(mwt(expr2,class,log.it = FALSE)$MWT)
+  #}
   rownames(p_stat_t_p)=rownames(expr2)
 
   if (abs==TRUE) {
@@ -130,9 +131,7 @@ if(plot3 == TRUE){
 
 
 ### p-value
-#library(sfsmisc)
 
-##### poprawić!!!
 if(ES_obs>=0){
   p<-length(which(ES_p>=ES_obs))
   p_val<-p/n.perm

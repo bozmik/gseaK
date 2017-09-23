@@ -20,7 +20,6 @@ Imports:
 	foreach,
 	parallel,
 	GeneSelector,
-	mwt,
 	Rcpp (>= 0.12.11)
 LinkingTo: Rcpp
 Collate:

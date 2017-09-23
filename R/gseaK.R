@@ -72,9 +72,12 @@ setMethod("gseaK", signature("data.frame"),
      p_stat_t <- as.matrix(RankingBaldiLong(expr,class, type = c("unpaired"))@statistic)
   } else if(stest == "moderatet.t"){
     p_stat_t <- as.matrix(RankingLimma(expr,class,type = c("unpaired"))@statistic)
-  } else if(stest == "moderated.wt"){
-    p_stat_t <- as.matrix(mwt(expr,class,log.it = FALSE)$MWT)
   }
+
+  ##
+  ##else if(stest == "moderated.wt"){
+  ##  p_stat_t <- as.matrix(mwt(expr,class,log.it = FALSE)$MWT)
+  ##}
 
   rownames(p_stat_t)=rownames(expr)
 
