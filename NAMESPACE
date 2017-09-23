@@ -11,6 +11,8 @@ importFrom("graphics", "hist")
 import(doParallel)
 import(parallel)
 import(foreach)
+importFrom("grDevices", "dev.off", "png")
+importFrom("graphics", "Axis", "legend", "lines", "mtext", "par", "rug", "text")
 
 export(gseaK)
 exportMethods(gseaK)
