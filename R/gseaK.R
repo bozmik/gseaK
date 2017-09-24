@@ -17,6 +17,14 @@
 #' @useDynLib gseaK
 #' @importFrom Rcpp sourceCpp
 #' @docType methods
+#' @examples
+#'data("exprData")
+#'data("phenoData")
+#'data("geneSets")
+#'
+#'gseaK(expr = exprData, pheno = phenoData, gSets = geneSets[,1:10])
+#'gseaK(expr = exprData, pheno = phenoData, gSets = geneSets[,1:10], stest = "shrinkage.t")
+#'
 #' @rdname gseaK-methods
 #' @export
 setGeneric("gseaK",
@@ -108,23 +116,9 @@ setMethod("gseaK", signature("data.frame"),
 
   ##### Benjamini and Hochberg p-value correction
 
-  ###poprawić!!!!
- # FDR <-function(x){
-  #  for (p in 1:dim(x)[1]){
-   #   if (x[p,3]>=0){
-  #      NS<-length(which(x[,4]>=0))
-  #      di<-length(which(x[-p,4]>=x[p,4]))
-  #    }else{
-  #      NS<-length(which(x[,4]<=0))
-  #      di<-length(which(x[-p,4]<=x[p,4]))
-  #    }
-  #    x[p,5]=(as.numeric(x[p,6])*NS)/di
-  #  }
-  #  return(x)
-#  }
+  ##result[4,] <- FDR(result[5,], result[3,])
 
- # FDR_results<-FDR(result)
-#  FDR_results[,8]<-p.adjust(FDR_results[,7], method="BH")
+  result[7,]<-p.adjust(result[6,], method="BH")
 
  # res<-FDR_results[,-6]
 

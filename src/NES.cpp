@@ -10,7 +10,7 @@ using namespace Rcpp;
 //' @rdname NES
 // [[Rcpp::export]]
 NumericVector NES(NumericVector x, double mp, double mn) {
-  NumericVector  NES_k(x.size());
+  NumericVector NES_k(x.size());
   int i = 0;
   for(NumericVector::iterator it = x.begin(); it != x.end(); ++it){
     if(*it>0){
