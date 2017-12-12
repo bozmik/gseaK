@@ -41,6 +41,7 @@ setGeneric("gseaK",
 
 #' @aliases gseaK-method
 #' @rdname gseaK-methods
+
 setMethod("gseaK", signature("data.frame"),
          function(expr, pheno, gSets, stest, abs, kernel, n.perm, correction, plot1, plot2, plot3){
 
